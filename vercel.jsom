@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "./index.js", // Entry point of your application
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.js" // Route all requests to your Express app
+    }
+  ],
+  "env": {
+    "CUSTOM_VARIABLE": "@custom_variable"
+  }
+}
