@@ -1,0 +1,135 @@
+<%- include('./layouts/header', { title: 'G Information' }) -%> <%-
+include('./layouts/nav') -%>
+
+<div class="g-container">
+  <div class="search">
+      <h1>Book Your G Test</h1>
+    <!-- <form action="/fetch-license-info" method="post">
+      <div class="search-container">
+        <input
+          type="text"
+          id="searchInput"
+          name="licenseNumber"
+          placeholder="Enter the License Number..."
+        />
+        <button type="submit" id="searchButton">Search</button>
+      </div>
+    </form> -->
+  </div>
+  <div class="result">
+    <% if(typeof(items) == 'object' && items.licenseNumber) { %>
+    <form action="/update-license-info" method="post">
+      <div class="flex-container">
+        <div class="fieldset-container">
+          <p>Personal Information</p>
+          <div class="fieldset">
+            <label for="firstName">First Name:</label>
+            <input
+              type="text"
+              id="firstName"
+              name="firstName"
+              value="<%= items.firstName %>"
+              disabled
+            />
+
+            <label for="lastName">Last Name:</label>
+            <input
+              type="text"
+              id="lastName"
+              name="lastName"
+              value="<%= items.lastName %>"
+              disabled
+            />
+
+            <label for="licenseNumber">License Number:</label>
+            <input
+              type="text"
+              id="licenseNumber"
+              name="licenseNumber"
+              value="<%= items.licenseNumber %>"
+              disabled
+            />
+
+            <input type="hidden" name="licenseNumber" value="<%= items.licenseNumber %>">
+            <label for="age">Age:</label>
+            <input
+              type="number"
+              id="age"
+              name="age"
+              min="16"
+              value="<%= items.age %>"
+              disabled
+            />
+
+            <label for="dob">Date of Birth:</label>
+            <input
+              type="date"
+              id="dob"
+              name="dob"
+              value="<%= items.dob ? new Date(items.dob).toISOString().substring(0,10): '' %>"
+              disabled
+            />
+          </div>
+        </div>
+        <div class="fieldset-container">
+          <p>Car Information</p>
+          <div class="fieldset">
+            <label for="make">Make:</label>
+            <input
+              type="text"
+              id="make"
+              name="carDetails[make]"
+              value="<%= items.carDetails['make'] %>"
+            />
+
+            <label for="model">Model:</label>
+            <input
+              type="text"
+              id="model"
+              name="carDetails[model]"
+              value="<%= items.carDetails['model'] %>"
+            />
+
+            <label for="modelType">Model Type:</label>
+            <input
+              type="text"
+              id="modelType"
+              name="carDetails[modelType]"
+              value="<%= items.carDetails['modelType'] %>"
+            />
+
+            <label for="year">Model Year:</label>
+            <input
+              type="number"
+              id="year"
+              name="carDetails[year]"
+              min="1900"
+              max="2024"
+              value="<%= items.carDetails.year %>"
+            />
+
+            <label for="plateNumber">Plate Number:</label>
+            <input
+              type="text"
+              id="plateNumber"
+              name="carDetails[plateNumber]"
+              value="<%= items.carDetails.plateNumber %>"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="g2-submit">
+        <input type="submit" value="Submit" />
+      </div>
+    </form>
+    <% } else if(!items.username) {%>
+      <h3>Enter license number to get data</h3>
+    <% } else  {%>
+      <div class="go-back">
+        <h3>Please submit the G2 details</h3>
+        <button class="btn-submit" onclick="window.location.href = '/g2'">Go Back</button>
+      </div>
+      <% } %>
+  </div>
+</div>
+<%- include('./layouts/footer') -%>

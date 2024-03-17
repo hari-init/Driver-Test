@@ -1,0 +1,73 @@
+<%- include('./layouts/header', { title: 'G2 Information Submission' }) -%> <%- include('./layouts/nav') -%>
+
+    <div class="g2-container">
+      <div class="search">
+        <h1>Your G2 Details</h1>
+      </div>
+
+      <form action="/submit-g2-info" method="post">
+        <% if(message) { %>
+          <p class="error"><%= message %></p>
+          <% } %>
+        <div class="flex-container">
+          <div class="fieldset-container">
+            <p>Personal Information</p>
+            <div class="fieldset">
+              <label for="username">User name:</label>
+              <input type="text" id="username" name="username" disabled />
+              <input type="hidden" id="hUsername" name="username">
+
+              <label for="firstName">First Name:</label>
+              <input type="text" id="firstName" name="firstName"  value="<%= items?.firstName %>" required />
+
+              <label for="lastName">Last Name:</label>
+              <input type="text" id="lastName" name="lastName" value="<%= items?.lastName %>" required />
+
+              <label for="licenseNumber">License Number:</label>
+              <input type="text" id="licenseNumber" name="licenseNumber" value="<%= items?.licenseNumber %>" pattern="[A-Za-z0-9]{8}"
+                title="License number must be 8 alphanumeric characters" required />
+
+              <label for="age">Age:</label>
+              <input type="number" id="age" name="age" min="16" value="<%= items?.age %>"  required />
+
+              <label for="dob">Date of Birth:</label>
+              <input type="date" id="dob" name="dob" value="<%= items?.dob ? new Date(items.dob).toISOString().substring(0,10): '' %>" required />
+            </div>
+          </div>
+          <div class="fieldset-container">
+            <p>Car Information</p>
+            <div class="fieldset">
+              <label for="make">Make:</label>
+              <input type="text" id="make" name="carDetails[make]" value="<%= items?.carDetails?.make %>" required />
+
+              <label for="model">Model:</label>
+              <input type="text" id="model" name="carDetails[model]" value="<%= items?.carDetails?.model %>" required />
+
+              <label for="modelType">Model Type:</label>
+              <input type="text" id="modelType" name="carDetails[modelType]" value="<%= items?.carDetails?.modelType %>" required />
+
+              <label for="year">Model Year:</label>
+              <input type="number" id="year" name="carDetails[year]"  value="<%= items?.carDetails?.year %>" min="1900" max="2024" required />
+
+              <label for="plateNumber">Plate Number:</label>
+              <input type="text" id="plateNumber" name="carDetails[plateNumber]" value="<%= items?.carDetails?.plateNumber %>" required />
+            </div>
+          </div>
+        </div>
+        <div class="g2-submit">
+          <input type="submit" value="Submit" />
+        </div>
+      </form>
+    </div>
+
+    <script>
+      const g2User = JSON.parse(sessionStorage.getItem('user'))
+      if (g2User && g2User.username) {
+        const unEl = document.querySelector('#username');
+        const unElH = document.querySelector('#hUsername');
+        unEl.value = g2User.username;
+        unElH.value = g2User.username;
+      }
+
+    </script>
+    <%- include('./layouts/footer') -%>

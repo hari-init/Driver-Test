@@ -1,0 +1,58 @@
+<nav>
+  <div><a href="/">BOOK DRIVE TEST</a></div>
+  <div class="nav-sec">
+    <a href="/">DASHBOARD</a>
+    <a id="g2" href="#">G2 TEST</a>
+    <a id="g" href="#">G TEST</a>
+    <a id="user" href="#"></a>
+    <a id="login" href="/login">LOGIN</a>
+  </div>
+</nav>
+<script>
+  const g2El = document.querySelector('#g2')
+  const gEl = document.querySelector('#g')
+  const user = document.querySelector('#user')
+  const login = document.querySelector('#login')
+  const userData = JSON.parse(sessionStorage.getItem('user'));
+  if (userData?.userType) {
+    g2El.style.display = 'block'
+    gEl.style.display = 'block'
+    login.style.display = 'none'
+    user.style.display = 'block'
+    user.innerHTML = `${userData.username}(Log Out)`
+  } else {
+    g2El.style.display = 'none'
+    gEl.style.display = 'none'
+    login.style.display = 'block'
+    user.style.display = 'none'
+  }
+  g2El.addEventListener('click', () => {
+    fetch('/g2', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData), // Make sure to stringify your JSON body
+    })
+      .then(data => {
+        window.location.href = '/g2';
+      })
+  })
+  gEl.addEventListener('click', () => {
+    fetch('/g', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData), // Make sure to stringify your JSON body
+    })
+      .then(data => {
+        window.location.href = '/g';
+      })
+  })
+  user.addEventListener('click', () => {
+    sessionStorage.clear()
+    window.location.href = '/login';
+  })
+
+</script>

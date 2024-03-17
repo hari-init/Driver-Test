@@ -1,0 +1,117 @@
+<%- include('./layouts/header', { title: 'Login' }) -%>
+    <%- include('./layouts/nav') -%>
+
+        <div class="main-content">
+            <!-- Placeholder for future login/sign-up form -->
+            <div class="login-placeholder">
+                <form>
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" name="username" placeholder="Enter username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" placeholder="Enter password" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="button" class="btn-submit" value="Login" onclick="userLogin()">
+                    </div>
+                    <p class="error"></p>
+                </form>
+                <div class="or">- or -</div>
+                <form>
+                    <div class="form-group">
+                        <label for="sign-username">Username:</label>
+                        <input type="text" id="sign-username" name="sign-username" placeholder="Enter username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sign-password">Password:</label>
+                        <input type="password" id="sign-password" name="sign-password" placeholder="Enter password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cPassword">Confirm Password:</label>
+                        <input type="password" id="cPassword" name="cPassword" placeholder="Re - Enter password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="userType">User Type:</label>
+                        <select type="Select" id="userType" name="userType">
+                            <option>Driver</option>
+                            <!-- <option>Examiner</option>
+                            <option>Admin</option> -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="button" class="btn-submit" value="Sign Up" onclick="register()">
+                    </div>
+                    <p class="error sign-error"></p>
+                </form>
+            </div>
+        </div>
+
+        <script>
+            const register = () => {
+                const username = document.querySelector('#sign-username');
+                const password = document.querySelector('#sign-password');
+                const cPassword = document.querySelector('#cPassword');
+                if(!(username.value || password.value || cPassword.value)) {
+                    document.querySelector('.sign-error').innerHTML = 'Please give all the fields' ;
+                    return
+                }
+
+                if (password.value !== cPassword.value) {
+                    document.querySelector('.sign-error').innerHTML = 'password don\'t match' ;
+                    return
+                }
+                const payload = {
+                    username: username.value,
+                    password: password.value,
+                    userType: userType.value
+                }
+
+                fetch('/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload), // Make sure to stringify your JSON body
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if(data.message) {
+                            document.querySelector('.sign-error').innerHTML = data.message;
+                        } else {
+                            window.location.href = '/'
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+            const userLogin = async () => {
+                const username = document.querySelector('#username').value;
+                const password = document.querySelector('#password').value;
+                const rePassword = document.querySelector('#password').value;
+                const payload = {
+                    username, password
+                }
+                fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload), // Make sure to stringify your JSON body
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data && data.data) {
+                            const userData = data.data;
+                            if (userData.userType == 'Driver') {
+                                sessionStorage.setItem('user', JSON.stringify(userData));
+                                window.location.href = '/'
+                            }
+                        } else if(data.message) {
+                            document.querySelector('.error').innerHTML = data.message;
+                        }
+                    }).catch(error => console.error('Error:', error));
+            }
+        </script>
+
+        <%- include('./layouts/footer') -%>
