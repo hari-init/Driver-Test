@@ -11,8 +11,5 @@
       "src": "/(.*)",
       "dest": "/index.js" // Route all requests to your Express app
     }
-  ],
-  "env": {
-    "CUSTOM_VARIABLE": "@custom_variable"
-  }
+  ]
 }
